@@ -1,0 +1,131 @@
+program_clean,academic_year,level,tot_students,tot_male,tot_female,duration,rolling_cohort,female_pct,male_pct,equity_status,cohort_female,cohort_male,cohort_female_pct
+BCA,2022,Under Graduate Degree,133,102,31,3,133,23.30827068,76.69172932,Highly Imbalanced,31,102,23.30827068
+BCA,2023,Under Graduate Degree,271,181,90,3,271,33.2103321,66.7896679,Moderately Imbalanced,90,181,33.2103321
+BCA,2024,Under Graduate Degree,396,248,148,3,396,37.37373737,62.62626263,Moderately Imbalanced,148,248,37.37373737
+BCA,2025,Under Graduate Degree,407,223,184,3,407,45.20884521,54.79115479,Balanced,184,223,45.20884521
+MSc Data Science,2022,Post Graduate Degree,89,40,49,2,89,55.05617978,44.94382022,Moderately Imbalanced,49,40,55.05617978
+MSc Data Science,2023,Post Graduate Degree,211,86,125,2,211,59.24170616,40.75829384,Moderately Imbalanced,125,86,59.24170616
+MSc Data Science,2024,Post Graduate Degree,208,76,132,2,208,63.46153846,36.53846154,Moderately Imbalanced,132,76,63.46153846
+MSc Data Science,2025,Post Graduate Degree,175,71,104,2,175,59.42857143,40.57142857,Moderately Imbalanced,104,71,59.42857143
+"ba (communication and media, psychology) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,121,12,109,3,121,90.08264463,9.917355372,Highly Imbalanced,109,12,90.08264463
+"ba (communication and media, psychology) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,179,18,161,3,179,89.94413408,10.05586592,Highly Imbalanced,161,18,89.94413408
+"ba (communication and media, psychology) - bangalore yeshwanthpur campus",2025,Under Graduate Degree,292,26,266,3,292,91.09589041,8.904109589,Highly Imbalanced,266,26,91.09589041
+ba (economics) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,85,29,56,3,85,65.88235294,34.11764706,Moderately Imbalanced,56,29,65.88235294
+ba (economics) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,124,40,84,3,124,67.74193548,32.25806452,Moderately Imbalanced,84,40,67.74193548
+ba (economics) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,209,70,139,3,209,66.50717703,33.49282297,Moderately Imbalanced,139,70,66.50717703
+"ba (psychology, economics) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,65,7,58,3,65,89.23076923,10.76923077,Highly Imbalanced,58,7,89.23076923
+"ba (psychology, economics) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,128,15,113,3,128,88.28125,11.71875,Highly Imbalanced,113,15,88.28125
+"ba (psychology, economics) - bangalore yeshwanthpur campus",2025,Under Graduate Degree,181,15,166,3,181,91.71270718,8.287292818,Highly Imbalanced,166,15,91.71270718
+"ba (psychology, english) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,81,6,75,3,81,92.59259259,7.407407407,Highly Imbalanced,75,6,92.59259259
+"ba (psychology, english) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,150,19,131,3,150,87.33333333,12.66666667,Highly Imbalanced,131,19,87.33333333
+"ba (psychology, english) - bangalore yeshwanthpur campus",2025,Under Graduate Degree,225,22,203,3,225,90.22222222,9.777777778,Highly Imbalanced,203,22,90.22222222
+ba psychology (honours) - bangalore yeshwantpur campus,2025,Under Graduate Degree,40,5,35,3,40,87.5,12.5,Highly Imbalanced,35,5,87.5
+"bachelor of arts (communication and media, psychology ) - bangalore yeshwanthpur campus",2022,Under Graduate Degree,120,23,97,3,120,80.83333333,19.16666667,Highly Imbalanced,97,23,80.83333333
+"bachelor of arts (communication and media, psychology ) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,112,21,91,3,112,81.25,18.75,Highly Imbalanced,91,21,81.25
+"bachelor of arts (communication and media, psychology ) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,110,21,89,3,110,80.90909091,19.09090909,Highly Imbalanced,89,21,80.90909091
+bachelor of arts (economics honours) - bangalore yeshwanthpur campus,2022,Under Graduate Degree,81,30,51,3,81,62.96296296,37.03703704,Moderately Imbalanced,51,30,62.96296296
+bachelor of arts (economics honours) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,76,26,50,3,76,65.78947368,34.21052632,Moderately Imbalanced,50,26,65.78947368
+bachelor of arts (economics honours) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,74,26,48,3,74,64.86486486,35.13513514,Moderately Imbalanced,48,26,64.86486486
+"bachelor of arts (psychology, economics) - bangalore yeshwanthpur campus",2022,Under Graduate Degree,50,4,46,3,50,92,8,Highly Imbalanced,46,4,92
+"bachelor of arts (psychology, economics) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,47,4,43,3,47,91.4893617,8.510638298,Highly Imbalanced,43,4,91.4893617
+"bachelor of arts (psychology, economics) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,47,4,43,3,47,91.4893617,8.510638298,Highly Imbalanced,43,4,91.4893617
+"bachelor of arts (psychology, english) - bangalore yeshwanthpur campus",2022,Under Graduate Degree,68,8,60,3,68,88.23529412,11.76470588,Highly Imbalanced,60,8,88.23529412
+"bachelor of arts (psychology, english) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,63,7,56,3,63,88.88888889,11.11111111,Highly Imbalanced,56,7,88.88888889
+"bachelor of arts (psychology, english) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,61,6,55,3,61,90.16393443,9.836065574,Highly Imbalanced,55,6,90.16393443
+bachelor of business administration (bba) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,267,166,101,3,267,37.82771536,62.17228464,Moderately Imbalanced,101,166,37.82771536
+bachelor of business administration (bba) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,532,299,233,3,532,43.79699248,56.20300752,Moderately Imbalanced,233,299,43.79699248
+bachelor of business administration (bba) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,828,476,352,3,828,42.51207729,57.48792271,Moderately Imbalanced,352,476,42.51207729
+bachelor of business administration (finance & international business)-bangalore yeshwanthpur campus,2022,Under Graduate Degree,282,171,111,3,282,39.36170213,60.63829787,Moderately Imbalanced,111,171,39.36170213
+bachelor of business administration (finance & international business)-bangalore yeshwanthpur campus,2023,Under Graduate Degree,263,156,107,3,263,40.68441065,59.31558935,Moderately Imbalanced,107,156,40.68441065
+bachelor of business administration (finance & international business)-bangalore yeshwanthpur campus,2024,Under Graduate Degree,255,150,105,3,255,41.17647059,58.82352941,Moderately Imbalanced,105,150,41.17647059
+bachelor of business administration (finance and accountancy) - bangalore yeshwanthpur campus,2022,Under Graduate Degree,66,39,27,3,66,40.90909091,59.09090909,Moderately Imbalanced,27,39,40.90909091
+bachelor of business administration (finance and accountancy) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,65,38,27,3,65,41.53846154,58.46153846,Moderately Imbalanced,27,38,41.53846154
+bachelor of business administration (finance and accountancy) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,63,38,25,3,63,39.68253968,60.31746032,Moderately Imbalanced,25,38,39.68253968
+bachelor of business administration (honours) - bangalore yeshwanthpur campus,2022,Under Graduate Degree,287,153,134,3,287,46.68989547,53.31010453,Balanced,134,153,46.68989547
+bachelor of business administration (honours) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,273,147,126,3,273,46.15384615,53.84615385,Balanced,126,147,46.15384615
+bachelor of business administration (honours) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,270,144,126,3,270,46.66666667,53.33333333,Balanced,126,144,46.66666667
+bachelor of business administration - bangalore yeshwanthpur campus,2022,Under Graduate Degree,251,141,110,3,251,43.8247012,56.1752988,Moderately Imbalanced,110,141,43.8247012
+bachelor of business administration - bangalore yeshwanthpur campus,2023,Under Graduate Degree,238,130,108,3,238,45.37815126,54.62184874,Balanced,108,130,45.37815126
+bachelor of business administration - bangalore yeshwanthpur campus,2024,Under Graduate Degree,235,127,108,3,235,45.95744681,54.04255319,Balanced,108,127,45.95744681
+bachelor of commerce (bcom) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,137,75,62,3,137,45.25547445,54.74452555,Balanced,62,75,45.25547445
+bachelor of commerce (bcom) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,249,127,122,3,249,48.99598394,51.00401606,Balanced,122,127,48.99598394
+bachelor of commerce (bcom) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,377,190,187,3,377,49.60212202,50.39787798,Balanced,187,190,49.60212202
+bachelor of commerce (finance and accountancy) - bangalore yeshwanthpur campus,2022,Under Graduate Degree,75,43,32,3,75,42.66666667,57.33333333,Moderately Imbalanced,32,43,42.66666667
+bachelor of commerce (finance and accountancy) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,73,41,32,3,73,43.83561644,56.16438356,Moderately Imbalanced,32,41,43.83561644
+bachelor of commerce (finance and accountancy) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,73,41,32,3,73,43.83561644,56.16438356,Moderately Imbalanced,32,41,43.83561644
+bachelor of commerce (honours) - bangalore yeshwanthpur campus,2022,Under Graduate Degree,147,81,66,3,147,44.89795918,55.10204082,Moderately Imbalanced,66,81,44.89795918
+bachelor of commerce (honours) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,136,74,62,3,136,45.58823529,54.41176471,Balanced,62,74,45.58823529
+bachelor of commerce (honours) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,134,73,61,3,134,45.52238806,54.47761194,Balanced,61,73,45.52238806
+bachelor of commerce - bangalore yeshwanthpur campus,2022,Under Graduate Degree,61,41,20,3,61,32.78688525,67.21311475,Moderately Imbalanced,20,41,32.78688525
+bachelor of commerce - bangalore yeshwanthpur campus,2023,Under Graduate Degree,59,39,20,3,59,33.89830508,66.10169492,Moderately Imbalanced,20,39,33.89830508
+bachelor of commerce - bangalore yeshwanthpur campus,2024,Under Graduate Degree,58,39,19,3,58,32.75862069,67.24137931,Moderately Imbalanced,19,39,32.75862069
+"bachelor of science (computer science, mathematics) - bangalore yeshwanthpur campus",2022,Under Graduate Degree,25,15,10,3,25,40,60,Moderately Imbalanced,10,15,40
+"bachelor of science (computer science, mathematics) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,22,12,10,3,22,45.45454545,54.54545455,Balanced,10,12,45.45454545
+"bachelor of science (computer science, mathematics) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,22,12,10,3,22,45.45454545,54.54545455,Balanced,10,12,45.45454545
+"bachelor of science (economics, mathematics) - bangalore yeshwanthpur campus",2022,Under Graduate Degree,28,11,17,3,28,60.71428571,39.28571429,Moderately Imbalanced,17,11,60.71428571
+"bachelor of science (economics, mathematics) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,26,10,16,3,26,61.53846154,38.46153846,Moderately Imbalanced,16,10,61.53846154
+"bachelor of science (economics, mathematics) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,25,9,16,3,25,64,36,Moderately Imbalanced,16,9,64
+bachelor of science (psychology honours) - bangalore yeshwanthpur campus,2022,Under Graduate Degree,126,29,97,3,126,76.98412698,23.01587302,Highly Imbalanced,97,29,76.98412698
+bachelor of science (psychology honours) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,117,27,90,3,117,76.92307692,23.07692308,Highly Imbalanced,90,27,76.92307692
+bachelor of science (psychology honours) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,114,26,88,3,114,77.19298246,22.80701754,Highly Imbalanced,88,26,77.19298246
+bba (finance and economics) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,88,34,54,3,88,61.36363636,38.63636364,Moderately Imbalanced,54,34,61.36363636
+bba (finance and economics) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,159,67,92,3,159,57.86163522,42.13836478,Moderately Imbalanced,92,67,57.86163522
+bba (finance and economics) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,259,124,135,3,259,52.12355212,47.87644788,Balanced,135,124,52.12355212
+bba (finance and international business) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,295,158,137,3,295,46.44067797,53.55932203,Balanced,137,158,46.44067797
+bba (finance and international business) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,554,305,249,3,554,44.94584838,55.05415162,Moderately Imbalanced,249,305,44.94584838
+bba (finance and international business) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,812,455,357,3,812,43.96551724,56.03448276,Moderately Imbalanced,357,455,43.96551724
+bba (finance and marketing analytics) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,158,78,80,3,158,50.63291139,49.36708861,Balanced,80,78,50.63291139
+bba (finance and marketing analytics) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,294,153,141,3,294,47.95918367,52.04081633,Balanced,141,153,47.95918367
+bba (finance and marketing analytics) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,473,272,201,3,473,42.49471459,57.50528541,Moderately Imbalanced,201,272,42.49471459
+bba (strategy and business analytics) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,94,54,40,3,94,42.55319149,57.44680851,Moderately Imbalanced,40,54,42.55319149
+bba (strategy and business analytics) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,162,99,63,3,162,38.88888889,61.11111111,Moderately Imbalanced,63,99,38.88888889
+bba (strategy and business analytics) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,239,146,93,3,239,38.91213389,61.08786611,Moderately Imbalanced,93,146,38.91213389
+bcom (accountancy and taxation) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,54,27,27,3,54,50,50,Balanced,27,27,50
+bcom (accountancy and taxation) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,102,52,50,3,102,49.01960784,50.98039216,Balanced,50,52,49.01960784
+bcom (accountancy and taxation) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,163,93,70,3,163,42.94478528,57.05521472,Moderately Imbalanced,70,93,42.94478528
+bcom (applied finance and analytics) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,44,20,24,3,44,54.54545455,45.45454545,Balanced,24,20,54.54545455
+bcom (applied finance and analytics) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,101,46,55,3,101,54.45544554,45.54455446,Balanced,55,46,54.45544554
+bcom (applied finance and analytics) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,179,86,93,3,179,51.95530726,48.04469274,Balanced,93,86,51.95530726
+bcom (finance and accountancy) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,95,38,57,3,95,60,40,Moderately Imbalanced,57,38,60
+bcom (finance and accountancy) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,163,70,93,3,163,57.05521472,42.94478528,Moderately Imbalanced,93,70,57.05521472
+bcom (finance and accountancy) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,248,105,143,3,248,57.66129032,42.33870968,Moderately Imbalanced,143,105,57.66129032
+bcom (finance and accountancy) [integrated with cpa australia] - bangalore yeshwanthpur campus,2023,Under Graduate Degree,23,13,10,3,23,43.47826087,56.52173913,Moderately Imbalanced,10,13,43.47826087
+bcom (finance and accountancy) [integrated with cpa australia] - bangalore yeshwanthpur campus,2024,Under Graduate Degree,46,23,23,3,46,50,50,Balanced,23,23,50
+bcom (finance and accountancy) [integrated with cpa australia] - bangalore yeshwanthpur campus,2025,Under Graduate Degree,46,24,22,3,46,47.82608696,52.17391304,Balanced,22,24,47.82608696
+bcom (finance and investment) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,72,45,27,3,72,37.5,62.5,Moderately Imbalanced,27,45,37.5
+bcom (finance and investment) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,144,81,63,3,144,43.75,56.25,Moderately Imbalanced,63,81,43.75
+bcom (finance and investment) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,227,133,94,3,227,41.40969163,58.59030837,Moderately Imbalanced,94,133,41.40969163
+bcom (international accountancy and finance) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,68,33,35,3,68,51.47058824,48.52941176,Balanced,35,33,51.47058824
+bcom (international accountancy and finance) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,140,70,70,3,140,50,50,Balanced,70,70,50
+bcom (international accountancy and finance) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,205,104,101,3,205,49.26829268,50.73170732,Balanced,101,104,49.26829268
+bcom (international business accounting/honours/honours with research) [integrated with cpa australia] - bangalore yeshwanthpur campus,2025,Under Graduate Degree,27,12,15,3,27,55.55555556,44.44444444,Moderately Imbalanced,15,12,55.55555556
+bsc (clinical psychology) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,20,1,19,3,20,95,5,Highly Imbalanced,19,1,95
+"bsc (computer science, mathematics) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,12,8,4,3,12,33.33333333,66.66666667,Moderately Imbalanced,4,8,33.33333333
+"bsc (computer science, mathematics) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,11,7,4,3,11,36.36363636,63.63636364,Moderately Imbalanced,4,7,36.36363636
+"bsc (computer science, mathematics) - bangalore yeshwanthpur campus",2025,Under Graduate Degree,11,7,4,3,11,36.36363636,63.63636364,Moderately Imbalanced,4,7,36.36363636
+"bsc (economics, mathematics, statistics) - bangalore yeshwanthpur campus",2023,Under Graduate Degree,58,24,34,3,58,58.62068966,41.37931034,Moderately Imbalanced,34,24,58.62068966
+"bsc (economics, mathematics, statistics) - bangalore yeshwanthpur campus",2024,Under Graduate Degree,108,47,61,3,108,56.48148148,43.51851852,Moderately Imbalanced,61,47,56.48148148
+"bsc (economics, mathematics, statistics) - bangalore yeshwanthpur campus",2025,Under Graduate Degree,156,67,89,3,156,57.05128205,42.94871795,Moderately Imbalanced,89,67,57.05128205
+bsc (psychology) - bangalore yeshwanthpur campus,2023,Under Graduate Degree,172,26,146,3,172,84.88372093,15.11627907,Highly Imbalanced,146,26,84.88372093
+bsc (psychology) - bangalore yeshwanthpur campus,2024,Under Graduate Degree,304,37,267,3,304,87.82894737,12.17105263,Highly Imbalanced,267,37,87.82894737
+bsc (psychology) - bangalore yeshwanthpur campus,2025,Under Graduate Degree,437,57,380,3,437,86.95652174,13.04347826,Highly Imbalanced,380,57,86.95652174
+bsc psychology (honours) with specialization in clinical - bangalore yeshwantpur campus,2025,Under Graduate Degree,28,5,23,3,28,82.14285714,17.85714286,Highly Imbalanced,23,5,82.14285714
+ma (applied linguistics and tesol) - bangalore yeshwanthpur campus,2025,Post Graduate Degree,6,1,5,2,6,83.33333333,16.66666667,Highly Imbalanced,5,1,83.33333333
+ma in digital media with analytics - bangalore yeshwanthpur campus,2025,Post Graduate Degree,17,3,14,2,17,82.35294118,17.64705882,Highly Imbalanced,14,3,82.35294118
+master of arts (applied economics) - bangalore yeshwanthpur campus,2022,Post Graduate Degree,41,13,28,2,41,68.29268293,31.70731707,Moderately Imbalanced,28,13,68.29268293
+master of arts (applied economics) - bangalore yeshwanthpur campus,2023,Post Graduate Degree,95,24,71,2,95,74.73684211,25.26315789,Highly Imbalanced,71,24,74.73684211
+master of arts (applied economics) - bangalore yeshwanthpur campus,2024,Post Graduate Degree,74,16,58,2,74,78.37837838,21.62162162,Highly Imbalanced,58,16,78.37837838
+master of arts (applied economics) - bangalore yeshwanthpur campus,2025,Post Graduate Degree,34,9,25,2,34,73.52941176,26.47058824,Highly Imbalanced,25,9,73.52941176
+master of arts (clinical psychology) [recognised by rci] - bangalore yeshwanthpur campus,2025,Post Graduate Degree,10,2,8,2,10,80,20,Highly Imbalanced,8,2,80
+master of arts (english with communication studies) - bangalore yeshwanthpur campus,2022,Post Graduate Degree,31,3,28,2,31,90.32258065,9.677419355,Highly Imbalanced,28,3,90.32258065
+master of arts (english with communication studies) - bangalore yeshwanthpur campus,2023,Post Graduate Degree,73,2,71,2,73,97.26027397,2.739726027,Highly Imbalanced,71,2,97.26027397
+master of arts (english with communication studies) - bangalore yeshwanthpur campus,2024,Post Graduate Degree,61,4,57,2,61,93.44262295,6.557377049,Highly Imbalanced,57,4,93.44262295
+master of arts (english with communication studies) - bangalore yeshwanthpur campus,2025,Post Graduate Degree,33,8,25,2,33,75.75757576,24.24242424,Highly Imbalanced,25,8,75.75757576
+master of commerce - bangalore yeshwanthpur campus,2023,Post Graduate Degree,12,6,6,2,12,50,50,Balanced,6,6,50
+master of commerce - bangalore yeshwanthpur campus,2024,Post Graduate Degree,20,9,11,2,20,55,45,Moderately Imbalanced,11,9,55
+master of commerce - bangalore yeshwanthpur campus,2025,Post Graduate Degree,24,10,14,2,24,58.33333333,41.66666667,Moderately Imbalanced,14,10,58.33333333
+master of science (clinical psychology) - bangalore yeshwanthpur campus,2022,Post Graduate Degree,113,8,105,2,113,92.92035398,7.079646018,Highly Imbalanced,105,8,92.92035398
+master of science (clinical psychology) - bangalore yeshwanthpur campus,2023,Post Graduate Degree,219,13,206,2,219,94.06392694,5.936073059,Highly Imbalanced,206,13,94.06392694
+master of science (clinical psychology) - bangalore yeshwanthpur campus,2024,Post Graduate Degree,229,9,220,2,229,96.069869,3.930131004,Highly Imbalanced,220,9,96.069869
+master of science (clinical psychology) - bangalore yeshwanthpur campus,2025,Post Graduate Degree,237,5,232,2,237,97.89029536,2.109704641,Highly Imbalanced,232,5,97.89029536
+msc (artificial intelligence and cyber security) - bangalore yeshwanthpur campus,2025,Post Graduate Degree,66,34,32,2,66,48.48484848,51.51515152,Balanced,32,34,48.48484848
