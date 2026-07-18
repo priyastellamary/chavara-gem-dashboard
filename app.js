@@ -52,13 +52,7 @@ function initializeDashboard() {
 
     populateFilters();
 
-    updateKPIs(filteredData);
-
-    createCharts(filteredData);
-
-    populateTable(filteredData);
-
-    generateInsights(filteredData);
+    updateDashboard();
 
 }
 // =======================================
@@ -68,7 +62,7 @@ function initializeDashboard() {
 function getLatestProgrammeRecords(data) {
 
     const selectedYear =
-        document.getElementById("academicYearFilter").value;
+      document.getElementById("yearFilter").value;
 
     if (selectedYear !== "All") {
         return data;
@@ -292,13 +286,16 @@ UPDATE ENTIRE DASHBOARD
 
 function updateDashboard() {
 
-    updateKPIs(filteredData);
+    const dashboardData =
+        getLatestProgrammeRecords(filteredData);
 
-    createCharts(filteredData);
+    updateKPIs(dashboardData);
 
-    populateTable(filteredData);
+    createCharts(dashboardData);
 
-    generateInsights(filteredData);
+    populateTable(dashboardData);
+
+    generateInsights(dashboardData);
 
 }
 
