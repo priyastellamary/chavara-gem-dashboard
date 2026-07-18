@@ -1,162 +1,178 @@
-/*==================================================
+/*==========================================================
 CHAVARA GEM ANALYTICS STUDIO
 filters.js
-==================================================*/
-
-/*
-This file coordinates all filter interactions.
-The actual filtering is performed in app.js.
-*/
+Version 2.0
+==========================================================*/
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    initializeFilterEvents();
+    initializeFilters();
 
 });
 
-/*==================================================
-INITIALIZE EVENTS
-==================================================*/
+/*==========================================================
+INITIALIZE FILTER EVENTS
+==========================================================*/
 
-function initializeFilterEvents(){
+function initializeFilters() {
 
-    attach("yearFilter");
+    attachFilter("yearFilter");
 
-    attach("programmeFilter");
+    attachFilter("programmeFilter");
 
-    attach("levelFilter");
+    attachFilter("levelFilter");
 
-    attach("equityFilter");
+    attachFilter("equityFilter");
 
-    attachSearch();
+    initializeSearch();
 
-    attachReset();
+    initializeReset();
 
 }
 
-/*==================================================
-ATTACH DROPDOWN
-==================================================*/
+/*==========================================================
+ATTACH FILTER
+==========================================================*/
 
-function attach(id){
+function attachFilter(id) {
 
-    const element=document.getElementById(id);
+    const element = document.getElementById(id);
 
-    if(!element) return;
+    if (!element) return;
 
-    element.addEventListener("change",()=>{
+    element.addEventListener("change", () => {
 
-        if(typeof applyFilters==="function"){
-
-            applyFilters();
-
-        }
+        applyFilters();
 
     });
 
 }
 
-/*==================================================
-SEARCH
-==================================================*/
+/*==========================================================
+SEARCH BOX
+==========================================================*/
 
-function attachSearch(){
+function initializeSearch() {
 
-    const box=document.getElementById("searchBox");
+    const search = document.getElementById("searchBox");
 
-    if(!box) return;
+    if (!search) return;
 
-    box.addEventListener("keyup",()=>{
+    search.addEventListener("keyup", () => {
 
-        if(typeof searchTable==="function"){
-
-            searchTable();
-
-        }
+        searchTable();
 
     });
 
 }
 
-/*==================================================
-RESET
-==================================================*/
+/*==========================================================
+RESET BUTTON
+==========================================================*/
 
-function attachReset(){
+function initializeReset() {
 
-    const btn=document.getElementById("resetFilters");
+    const button = document.getElementById("resetFilters");
 
-    if(!btn) return;
+    if (!button) return;
 
-    btn.addEventListener("click",()=>{
+    button.addEventListener("click", () => {
 
-        if(typeof resetFilters==="function"){
-
-            resetFilters();
-
-        }
+        resetFilters();
 
     });
 
 }
 
-/*==================================================
-GET CURRENT FILTERS
-==================================================*/
+/*==========================================================
+FILTER SUMMARY
+==========================================================*/
 
-function currentFilters(){
+function getFilterSummary() {
 
-    return{
+    return {
 
         year:
-
-        document.getElementById("yearFilter")?.value ||
-
-        "All",
+            document.getElementById("yearFilter")?.value || "All",
 
         programme:
-
-        document.getElementById("programmeFilter")?.value ||
-
-        "All",
+            document.getElementById("programmeFilter")?.value || "All",
 
         level:
-
-        document.getElementById("levelFilter")?.value ||
-
-        "All",
+            document.getElementById("levelFilter")?.value || "All",
 
         equity:
-
-        document.getElementById("equityFilter")?.value ||
-
-        "All"
+            document.getElementById("equityFilter")?.value || "All"
 
     };
 
 }
 
-/*==================================================
+/*==========================================================
+DISPLAY ACTIVE FILTERS
+==========================================================*/
+
+function updateFilterBadge() {
+
+    const badge = document.getElementById("activeFilters");
+
+    if (!badge) return;
+
+    const filters = getFilterSummary();
+
+    badge.innerHTML = `
+
+        <strong>Year:</strong> ${filters.year}
+
+        |
+
+        <strong>Programme:</strong> ${filters.programme}
+
+        |
+
+        <strong>Level:</strong> ${filters.level}
+
+        |
+
+        <strong>Equity:</strong> ${filters.equity}
+
+    `;
+
+}
+
+/*==========================================================
+REFRESH AFTER FILTER CHANGE
+==========================================================*/
+
+function refreshDashboardView() {
+
+    updateFilterBadge();
+
+    updateDashboard();
+
+}
+
+/*==========================================================
 CLEAR SEARCH
-==================================================*/
+==========================================================*/
 
-function clearSearch(){
+function clearSearchBox() {
 
-    const box=document.getElementById("searchBox");
+    const search = document.getElementById("searchBox");
 
-    if(box){
+    if (search) {
 
-        box.value="";
+        search.value = "";
 
     }
 
 }
 
-/*==================================================
-CLEAR FILTERS
-==================================================*/
+/*==========================================================
+CLEAR ALL FILTERS
+==========================================================*/
 
-function clearFilterSelections(){
+function clearAllFilters() {
 
     [
 
@@ -168,13 +184,13 @@ function clearFilterSelections(){
 
         "equityFilter"
 
-    ].forEach(id=>{
+    ].forEach(id => {
 
-        const element=document.getElementById(id);
+        const element = document.getElementById(id);
 
-        if(element){
+        if (element) {
 
-            element.value="All";
+            element.value = "All";
 
         }
 
@@ -182,60 +198,24 @@ function clearFilterSelections(){
 
 }
 
-/*==================================================
-REFRESH DASHBOARD
-==================================================*/
+/*==========================================================
+EXPORT FILTER OBJECT
+==========================================================*/
 
-function refreshDashboard(){
+window.dashboardFilters = {
 
-    if(typeof updateDashboard==="function"){
+    getFilterSummary,
 
-        updateDashboard();
+    updateFilterBadge,
 
-    }
+    refreshDashboardView,
 
-}
+    clearSearchBox,
 
-/*==================================================
-FILTER SUMMARY
-==================================================*/
-
-function selectedFilterSummary(){
-
-    const filters=currentFilters();
-
-    return`
-
-Year : ${filters.year}
-
-Programme : ${filters.programme}
-
-Level : ${filters.level}
-
-Equity : ${filters.equity}
-
-`;
-
-}
-
-/*==================================================
-EXPORT FILTERS
-==================================================*/
-
-window.dashboardFilters={
-
-    currentFilters,
-
-    clearSearch,
-
-    clearFilterSelections,
-
-    refreshDashboard,
-
-    selectedFilterSummary
+    clearAllFilters
 
 };
 
-/*==================================================
+/*==========================================================
 END OF filters.js
-==================================================*/
+==========================================================*/
