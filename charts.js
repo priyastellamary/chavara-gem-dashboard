@@ -49,6 +49,8 @@ function createCharts(data) {
 
     createRollingCohortChart(data);
 
+    createLevelChart(data);
+
 }
 
 /*==========================================================
@@ -813,4 +815,4 @@ function aggregateByField(data, groupField, valueField) {
 END OF charts.js
 ==========================================================*/
 
-}
+
