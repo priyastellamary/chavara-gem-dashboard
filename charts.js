@@ -1,13 +1,13 @@
-/*==================================================
+/*==========================================================
 CHAVARA GEM ANALYTICS STUDIO
-charts.js
-==================================================*/
+charts.js Version 2
+==========================================================*/
 
 let chartObjects = {};
 
-/*==================================================
+/*==========================================================
 DESTROY EXISTING CHARTS
-==================================================*/
+==========================================================*/
 
 function destroyCharts() {
 
@@ -25,9 +25,9 @@ function destroyCharts() {
 
 }
 
-/*==================================================
-MAIN CHART FUNCTION
-==================================================*/
+/*==========================================================
+CREATE ALL CHARTS
+==========================================================*/
 
 function createCharts(data) {
 
@@ -47,26 +47,21 @@ function createCharts(data) {
 
     createMaleFemaleChart(data);
 
-    createCohortChart(data);
+    createRollingCohortChart(data);
 
 }
 
-/*==================================================
-GENDER DISTRIBUTION (PIE)
-==================================================*/
+/*==========================================================
+GENDER DISTRIBUTION
+==========================================================*/
 
 function createGenderChart(data) {
 
-    let female = 0;
-    let male = 0;
+    const totalMale = data.reduce(
+        (sum, row) => sum + Number(row.tot_male || 0), 0);
 
-    data.forEach(row => {
-
-        female += Number(row.Female) || Number(row.Female_Count) || 0;
-
-        male += Number(row.Male) || Number(row.Male_Count) || 0;
-
-    });
+    const totalFemale = data.reduce(
+        (sum, row) => sum + Number(row.tot_female || 0), 0);
 
     const ctx = document.getElementById("genderChart");
 
@@ -74,27 +69,43 @@ function createGenderChart(data) {
 
     chartObjects.genderChart = new Chart(ctx, {
 
-        type: "pie",
+        type: "doughnut",
 
         data: {
 
-            labels: ["Female", "Male"],
+            labels: [
 
-            datasets: [{
+                "Male",
 
-                data: [female, male],
+                "Female"
 
-                backgroundColor: [
+            ],
 
-                    "#ec4899",
+            datasets: [
 
-                    "#3b82f6"
+                {
 
-                ],
+                    data: [
 
-                borderWidth: 1
+                        totalMale,
 
-            }]
+                        totalFemale
+
+                    ],
+
+                    backgroundColor: [
+
+                        "#2563eb",
+
+                        "#ec4899"
+
+                    ],
+
+                    borderWidth: 1
+
+                }
+
+            ]
 
         },
 
@@ -120,21 +131,25 @@ function createGenderChart(data) {
 
 }
 
-/*==================================================
-PROGRAMME DISTRIBUTION (BAR)
-==================================================*/
+/*==========================================================
+PROGRAMME DISTRIBUTION
+==========================================================*/
 
 function createProgrammeChart(data) {
 
-    const counts = {};
+    const totals = {};
 
     data.forEach(row => {
 
-        const programme = row.Programme || "Unknown";
-
-        counts[programme] = (counts[programme] || 0) + 1;
+        totals[row.program_clean] =
+            (totals[row.program_clean] || 0)
+            + Number(row.tot_students);
 
     });
+
+    const labels = Object.keys(totals);
+
+    const values = Object.values(totals);
 
     const ctx = document.getElementById("programmeChart");
 
@@ -146,17 +161,21 @@ function createProgrammeChart(data) {
 
         data: {
 
-            labels: Object.keys(counts),
+            labels: labels,
 
-            datasets: [{
+            datasets: [
 
-                label: "Programmes",
+                {
 
-                data: Object.values(counts),
+                    label: "Students",
 
-                backgroundColor: "#2563eb"
+                    data: values,
 
-            }]
+                    backgroundColor: "#0ea5e9"
+
+                }
+
+            ]
 
         },
 
@@ -189,29 +208,27 @@ function createProgrammeChart(data) {
         }
 
     });
-
-}
-/*==================================================
-ACADEMIC YEAR TREND (LINE CHART)
-==================================================*/
+    /*==========================================================
+ACADEMIC YEAR TREND
+==========================================================*/
 
 function createAcademicYearChart(data) {
 
-    const yearlyData = {};
+    const yearTotals = {};
 
     data.forEach(row => {
 
-        const year = row.Academic_Year || "Unknown";
+        const year = row.academic_year;
 
-        const students =
-            Number(row.Total_Students) ||
-            Number(row.TotalStudents) ||
-            Number(row.Total) ||
-            0;
-
-        yearlyData[year] = (yearlyData[year] || 0) + students;
+        yearTotals[year] =
+            (yearTotals[year] || 0) +
+            Number(row.tot_students);
 
     });
+
+    const labels = Object.keys(yearTotals).sort();
+
+    const values = labels.map(y => yearTotals[y]);
 
     const ctx = document.getElementById("yearChart");
 
@@ -223,13 +240,13 @@ function createAcademicYearChart(data) {
 
         data: {
 
-            labels: Object.keys(yearlyData),
+            labels: labels,
 
             datasets: [{
 
                 label: "Students",
 
-                data: Object.values(yearlyData),
+                data: values,
 
                 borderColor: "#2563eb",
 
@@ -237,7 +254,9 @@ function createAcademicYearChart(data) {
 
                 fill: true,
 
-                tension: 0.4
+                tension: 0.35,
+
+                pointRadius: 5
 
             }]
 
@@ -265,68 +284,71 @@ function createAcademicYearChart(data) {
 
 }
 
-/*==================================================
-TOP PROGRAMMES (HORIZONTAL BAR)
-==================================================*/
+/*==========================================================
+TOP 10 PROGRAMMES
+==========================================================*/
 
 function createTopProgrammeChart(data) {
 
-    const programmeTotals = {};
+    const totals = {};
 
     data.forEach(row => {
 
-        const programme = row.Programme || "Unknown";
-
-        const students =
-            Number(row.Total_Students) ||
-            Number(row.TotalStudents) ||
-            Number(row.Total) ||
-            0;
-
-        programmeTotals[programme] =
-            (programmeTotals[programme] || 0) + students;
+        totals[row.program_clean] =
+            (totals[row.program_clean] || 0)
+            + Number(row.tot_students);
 
     });
 
-    const sorted = Object.entries(programmeTotals)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10);
+    const sorted = Object.entries(totals)
 
-    const ctx = document.getElementById("topProgrammeChart");
+        .sort((a,b)=>b[1]-a[1])
 
-    if (!ctx) return;
+        .slice(0,10);
 
-    chartObjects.topProgrammeChart = new Chart(ctx, {
+    const labels = sorted.map(x=>x[0]);
 
-        type: "bar",
+    const values = sorted.map(x=>x[1]);
 
-        data: {
+    const ctx =
+        document.getElementById("topProgrammeChart");
 
-            labels: sorted.map(x => x[0]),
+    if(!ctx) return;
 
-            datasets: [{
+    chartObjects.topProgrammeChart =
+        new Chart(ctx,{
 
-                data: sorted.map(x => x[1]),
+        type:"bar",
 
-                backgroundColor: "#0ea5e9"
+        data:{
+
+            labels:labels,
+
+            datasets:[{
+
+                label:"Students",
+
+                data:values,
+
+                backgroundColor:"#14b8a6"
 
             }]
 
         },
 
-        options: {
+        options:{
 
-            responsive: true,
+            responsive:true,
 
-            maintainAspectRatio: false,
+            maintainAspectRatio:false,
 
-            indexAxis: "y",
+            indexAxis:"y",
 
-            plugins: {
+            plugins:{
 
-                legend: {
+                legend:{
 
-                    display: false
+                    display:false
 
                 }
 
@@ -338,45 +360,47 @@ function createTopProgrammeChart(data) {
 
 }
 
-/*==================================================
-EQUITY STATUS (DOUGHNUT)
-==================================================*/
+/*==========================================================
+EQUITY STATUS
+==========================================================*/
 
-function createEquityChart(data) {
+function createEquityChart(data){
 
-    const equity = {};
+    const equity={};
 
-    data.forEach(row => {
+    data.forEach(row=>{
 
-        const status = row.Equity_Status || "Unknown";
+        equity[row.equity_status]=
 
-        equity[status] = (equity[status] || 0) + 1;
+            (equity[row.equity_status]||0)+1;
 
     });
 
-    const ctx = document.getElementById("equityChart");
+    const ctx=document.getElementById("equityChart");
 
-    if (!ctx) return;
+    if(!ctx) return;
 
-    chartObjects.equityChart = new Chart(ctx, {
+    chartObjects.equityChart=
 
-        type: "doughnut",
+    new Chart(ctx,{
 
-        data: {
+        type:"pie",
 
-            labels: Object.keys(equity),
+        data:{
 
-            datasets: [{
+            labels:Object.keys(equity),
 
-                data: Object.values(equity),
+            datasets:[{
 
-                backgroundColor: [
+                data:Object.values(equity),
 
-                    "#2563eb",
-                    "#16a34a",
+                backgroundColor:[
+
+                    "#22c55e",
+
                     "#f59e0b",
-                    "#dc2626",
-                    "#8b5cf6"
+
+                    "#ef4444"
 
                 ]
 
@@ -384,17 +408,17 @@ function createEquityChart(data) {
 
         },
 
-        options: {
+        options:{
 
-            responsive: true,
+            responsive:true,
 
-            maintainAspectRatio: false,
+            maintainAspectRatio:false,
 
-            plugins: {
+            plugins:{
 
-                legend: {
+                legend:{
 
-                    position: "bottom"
+                    position:"bottom"
 
                 }
 
@@ -406,73 +430,87 @@ function createEquityChart(data) {
 
 }
 
-/*==================================================
-FEMALE PARTICIPATION (BAR)
-==================================================*/
+/*==========================================================
+FEMALE PERCENTAGE TREND
+==========================================================*/
 
-function createFemaleTrendChart(data) {
+function createFemaleTrendChart(data){
 
-    const femaleData = {};
+    const yearly={};
 
-    data.forEach(row => {
+    data.forEach(row=>{
 
-        const programme = row.Programme || "Unknown";
+        if(!yearly[row.academic_year]){
 
-        const female =
-            Number(row.Female) ||
-            Number(row.Female_Count) ||
-            0;
+            yearly[row.academic_year]=[];
 
-        femaleData[programme] =
-            (femaleData[programme] || 0) + female;
+        }
+
+        yearly[row.academic_year]
+
+            .push(Number(row.female_pct));
 
     });
 
-    const ctx = document.getElementById("femaleTrendChart");
+    const labels=Object.keys(yearly).sort();
 
-    if (!ctx) return;
+    const values=labels.map(year=>{
 
-    chartObjects.femaleTrendChart = new Chart(ctx, {
+        const arr=yearly[year];
 
-        type: "bar",
+        return arr.reduce((a,b)=>a+b,0)/arr.length;
 
-        data: {
+    });
 
-            labels: Object.keys(femaleData),
+    const ctx=
 
-            datasets: [{
+    document.getElementById("femaleTrendChart");
 
-                label: "Female Students",
+    if(!ctx) return;
 
-                data: Object.values(femaleData),
+    chartObjects.femaleTrendChart=
 
-                backgroundColor: "#ec4899"
+    new Chart(ctx,{
+
+        type:"line",
+
+        data:{
+
+            labels:labels,
+
+            datasets:[{
+
+                label:"Average Female %",
+
+                data:values,
+
+                borderColor:"#ec4899",
+
+                backgroundColor:"rgba(236,72,153,0.15)",
+
+                fill:true,
+
+                tension:0.4,
+
+                pointRadius:5
 
             }]
 
         },
 
-        options: {
+        options:{
 
-            responsive: true,
+            responsive:true,
 
-            maintainAspectRatio: false,
+            maintainAspectRatio:false,
 
-            plugins: {
+            scales:{
 
-                legend: {
+                y:{
 
-                    display: false
+                    beginAtZero:true,
 
-                }
-
-            },
-
-            scales: {
-
-                y: {
-
-                    beginAtZero: true
+                    max:100
 
                 }
 
@@ -483,41 +521,17 @@ function createFemaleTrendChart(data) {
     });
 
 }
-/*==================================================
-MALE vs FEMALE (STACKED BAR)
-==================================================*/
+/*==========================================================
+MALE vs FEMALE COMPARISON
+==========================================================*/
 
 function createMaleFemaleChart(data) {
 
-    const labels = [];
-    const female = [];
-    const male = [];
+    const labels = data.map(row => row.program_clean);
 
-    data.forEach(row => {
+    const male = data.map(row => Number(row.tot_male));
 
-        labels.push(row.Programme || "Unknown");
-
-        female.push(
-
-            Number(row.Female) ||
-
-            Number(row.Female_Count) ||
-
-            0
-
-        );
-
-        male.push(
-
-            Number(row.Male) ||
-
-            Number(row.Male_Count) ||
-
-            0
-
-        );
-
-    });
+    const female = data.map(row => Number(row.tot_female));
 
     const ctx = document.getElementById("maleFemaleChart");
 
@@ -535,21 +549,21 @@ function createMaleFemaleChart(data) {
 
                 {
 
-                    label: "Female",
+                    label: "Male",
 
-                    data: female,
+                    data: male,
 
-                    backgroundColor: "#ec4899"
+                    backgroundColor: "#2563eb"
 
                 },
 
                 {
 
-                    label: "Male",
+                    label: "Female",
 
-                    data: male,
+                    data: female,
 
-                    backgroundColor: "#3b82f6"
+                    backgroundColor: "#ec4899"
 
                 }
 
@@ -597,35 +611,27 @@ function createMaleFemaleChart(data) {
 
 }
 
-/*==================================================
-ROLLING COHORT (LINE)
-==================================================*/
+/*==========================================================
+ROLLING COHORT TREND
+==========================================================*/
 
-function createCohortChart(data) {
+function createRollingCohortChart(data) {
 
-    const cohort = {};
+    const cohortTotals = {};
 
     data.forEach(row => {
 
-        const year = row.Academic_Year || "Unknown";
+        cohortTotals[row.academic_year] =
 
-        const total =
+            (cohortTotals[row.academic_year] || 0)
 
-            Number(row.Total_Students) ||
-
-            Number(row.TotalStudents) ||
-
-            Number(row.Total) ||
-
-            0;
-
-        cohort[year] = (cohort[year] || 0) + total;
+            + Number(row.rolling_cohort);
 
     });
 
-    const labels = Object.keys(cohort).sort();
+    const labels = Object.keys(cohortTotals).sort();
 
-    const values = labels.map(y => cohort[y]);
+    const values = labels.map(year => cohortTotals[year]);
 
     const ctx = document.getElementById("cohortChart");
 
@@ -643,7 +649,7 @@ function createCohortChart(data) {
 
                 {
 
-                    label: "Students",
+                    label: "Rolling Cohort",
 
                     data: values,
 
@@ -653,7 +659,9 @@ function createCohortChart(data) {
 
                     fill: true,
 
-                    tension: 0.35
+                    tension: 0.35,
+
+                    pointRadius: 5
 
                 }
 
@@ -666,16 +674,6 @@ function createCohortChart(data) {
             responsive: true,
 
             maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-
-                    display: false
-
-                }
-
-            },
 
             scales: {
 
@@ -693,6 +691,126 @@ function createCohortChart(data) {
 
 }
 
-/*==================================================
+/*==========================================================
+LEVEL DISTRIBUTION (UG vs PG)
+==========================================================*/
+
+function createLevelChart(data) {
+
+    const levelTotals = {};
+
+    data.forEach(row => {
+
+        levelTotals[row.level] =
+
+            (levelTotals[row.level] || 0)
+
+            + Number(row.tot_students);
+
+    });
+
+    const ctx = document.getElementById("levelChart");
+
+    if (!ctx) return;
+
+    chartObjects.levelChart = new Chart(ctx, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: Object.keys(levelTotals),
+
+            datasets: [
+
+                {
+
+                    data: Object.values(levelTotals),
+
+                    backgroundColor: [
+
+                        "#10b981",
+
+                        "#f59e0b"
+
+                    ]
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+/*==========================================================
+CHART COLOR PALETTE
+==========================================================*/
+
+const chartColors = {
+
+    blue: "#2563eb",
+
+    pink: "#ec4899",
+
+    green: "#10b981",
+
+    orange: "#f59e0b",
+
+    purple: "#8b5cf6",
+
+    teal: "#14b8a6",
+
+    red: "#ef4444"
+
+};
+
+/*==========================================================
+OPTIONAL HELPER
+==========================================================*/
+
+function aggregateByField(data, groupField, valueField) {
+
+    const result = {};
+
+    data.forEach(row => {
+
+        const key = row[groupField];
+
+        result[key] =
+
+            (result[key] || 0)
+
+            + Number(row[valueField] || 0);
+
+    });
+
+    return result;
+
+}
+
+/*==========================================================
 END OF charts.js
-==================================================*/
+==========================================================*/
+
+}
