@@ -1,3 +1,4 @@
+console.log("app.js loaded");
 /*==========================================================
  CHAVARA GEM ANALYTICS STUDIO
  app.js
