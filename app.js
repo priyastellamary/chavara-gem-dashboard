@@ -1,224 +1,189 @@
-/*==================================================
-CHAVARA GEM ANALYTICS STUDIO
-app.js
-==================================================*/
+/*==========================================================
+ CHAVARA GEM ANALYTICS STUDIO
+ app.js
+ Version 2.0
+==========================================================*/
 
-let rawData = [];
+// Global Variables
+
+let originalData = [];
 let filteredData = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadCSV();
+/*==========================================================
+LOAD CSV
+==========================================================*/
+
+Papa.parse("chavara_gem_final_output_no_phd.csv", {
+
+    download: true,
+
+    header: true,
+
+    dynamicTyping: true,
+
+    skipEmptyLines: true,
+
+    complete: function(results) {
+
+        originalData = results.data;
+
+        filteredData = [...originalData];
+
+        initializeDashboard();
+
+    },
+
+    error: function(err) {
+
+        console.error("CSV Loading Error:", err);
+
+    }
+
 });
 
-/*==================================================
-LOAD CSV
-==================================================*/
-
-function loadCSV() {
-
-    Papa.parse("chavara_gem_final_output_no_phd.csv", {
-
-        download: true,
-
-        header: true,
-
-        skipEmptyLines: true,
-
-        complete: function (results) {
-
-            rawData = results.data;
-            filteredData = [...rawData];
-
-            initializeDashboard();
-
-        },
-
-        error: function (err) {
-
-            console.error(err);
-
-            alert("Unable to load CSV file.");
-
-        }
-
-    });
-
-}
-
-/*==================================================
-INITIALIZE
-==================================================*/
+/*==========================================================
+INITIALIZE DASHBOARD
+==========================================================*/
 
 function initializeDashboard() {
 
     populateFilters();
 
-    updateKPIs();
+    updateKPIs(filteredData);
 
-    populateTable();
+    createCharts(filteredData);
 
-    generateInsights();
+    populateTable(filteredData);
 
-    if (typeof createCharts === "function") {
-        createCharts(filteredData);
+    generateInsights(filteredData);
+
+}
+
+/*==========================================================
+UPDATE KPI CARDS
+==========================================================*/
+
+function updateKPIs(data) {
+
+    const totalStudents = data.reduce(
+        (sum, row) => sum + Number(row.tot_students || 0), 0);
+
+    const totalMale = data.reduce(
+        (sum, row) => sum + Number(row.tot_male || 0), 0);
+
+    const totalFemale = data.reduce(
+        (sum, row) => sum + Number(row.tot_female || 0), 0);
+
+    const femalePercent =
+        totalStudents > 0
+        ? (totalFemale / totalStudents) * 100
+        : 0;
+
+    const programmes =
+        new Set(data.map(r => r.program_clean)).size;
+
+    const academicYears =
+        new Set(data.map(r => r.academic_year)).size;
+
+    const balanced =
+        data.filter(r =>
+            r.equity_status === "Balanced").length;
+
+    const highlyImbalanced =
+        data.filter(r =>
+            r.equity_status === "Highly Imbalanced").length;
+
+    setValue("kpiStudents", totalStudents.toLocaleString());
+
+    setValue("kpiMale", totalMale.toLocaleString());
+
+    setValue("kpiFemale", totalFemale.toLocaleString());
+
+    setValue("kpiFemalePercent",
+        femalePercent.toFixed(2) + "%");
+
+    setValue("kpiProgrammes", programmes);
+
+    setValue("kpiYears", academicYears);
+
+    setValue("kpiBalanced", balanced);
+
+    setValue("kpiHighly", highlyImbalanced);
+
+}
+
+/*==========================================================
+SET HTML VALUE
+==========================================================*/
+
+function setValue(id, value) {
+
+    const element = document.getElementById(id);
+
+    if (element) {
+
+        element.textContent = value;
+
     }
-
-}
-
-/*==================================================
-KPI CALCULATIONS
-==================================================*/
-
-function updateKPIs() {
-
-    let totalStudents = 0;
-
-    let femaleStudents = 0;
-
-    const programmes = new Set();
-
-    filteredData.forEach(row => {
-
-        let total =
-            Number(row.Total_Students) ||
-            Number(row.TotalStudents) ||
-            Number(row.Total) ||
-            0;
-
-        let female =
-            Number(row.Female) ||
-            Number(row.Female_Count) ||
-            0;
-
-        totalStudents += total;
-
-        femaleStudents += female;
-
-        if (row.Programme)
-            programmes.add(row.Programme);
-
-    });
-
-    let femalePercent = 0;
-
-    if (totalStudents > 0)
-        femalePercent =
-            (femaleStudents / totalStudents) * 100;
-
-    document.getElementById("studentsCount").innerHTML =
-        totalStudents.toLocaleString();
-
-    document.getElementById("programmeCount").innerHTML =
-        programmes.size;
-
-    document.getElementById("femalePercent").innerHTML =
-        femalePercent.toFixed(1) + "%";
-
-    document.getElementById("equityScore").innerHTML =
-        calculateEquity().toFixed(1);
-
-}
-
-/*==================================================
-EQUITY SCORE
-==================================================*/
-
-function calculateEquity() {
-
-    let female = 0;
-
-    let total = 0;
-
-    filteredData.forEach(r => {
-
-        female +=
-            Number(r.Female) ||
-            Number(r.Female_Count) ||
-            0;
-
-        total +=
-            Number(r.Total_Students) ||
-            Number(r.TotalStudents) ||
-            Number(r.Total) ||
-            0;
-
-    });
-
-    if (total === 0)
-        return 0;
-
-    let percent =
-        (female / total) * 100;
-
-    return 100 - Math.abs(50 - percent) * 2;
-
-}
-/*==================================================
+    /*==========================================================
 POPULATE FILTERS
-==================================================*/
+==========================================================*/
 
 function populateFilters() {
 
-    populateSelect("yearFilter", "Academic_Year");
-    populateSelect("programmeFilter", "Programme");
-    populateSelect("levelFilter", "Level");
-    populateSelect("equityFilter", "Equity_Status");
+    populateSelect(
+        "yearFilter",
+        [...new Set(originalData.map(r => r.academic_year))]
+            .sort()
+    );
 
-    document
-        .getElementById("yearFilter")
-        .addEventListener("change", applyFilters);
+    populateSelect(
+        "programmeFilter",
+        [...new Set(originalData.map(r => r.program_clean))]
+            .sort()
+    );
 
-    document
-        .getElementById("programmeFilter")
-        .addEventListener("change", applyFilters);
+    populateSelect(
+        "levelFilter",
+        [...new Set(originalData.map(r => r.level))]
+            .sort()
+    );
 
-    document
-        .getElementById("levelFilter")
-        .addEventListener("change", applyFilters);
-
-    document
-        .getElementById("equityFilter")
-        .addEventListener("change", applyFilters);
-
-    document
-        .getElementById("resetFilters")
-        .addEventListener("click", resetFilters);
-
-    const searchBox = document.getElementById("searchBox");
-
-    if(searchBox){
-
-        searchBox.addEventListener("keyup", searchTable);
-
-    }
+    populateSelect(
+        "equityFilter",
+        [...new Set(originalData.map(r => r.equity_status))]
+            .sort()
+    );
 
 }
 
-/*==================================================
-POPULATE A DROPDOWN
-==================================================*/
+/*==========================================================
+POPULATE DROPDOWN
+==========================================================*/
 
-function populateSelect(id, field){
+function populateSelect(id, values) {
 
     const select = document.getElementById(id);
 
-    if(!select) return;
+    if (!select) return;
 
-    const values = [...new Set(
+    select.innerHTML = "";
 
-        rawData
-            .map(r => r[field])
-            .filter(v => v && v.trim() !== "")
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "All";
+    defaultOption.textContent = "All";
+    select.appendChild(defaultOption);
 
-    )].sort();
+    values.forEach(value => {
 
-    values.forEach(v=>{
+        if (value === null || value === undefined || value === "")
+            return;
 
-        const option=document.createElement("option");
+        const option = document.createElement("option");
 
-        option.value=v;
+        option.value = value;
 
-        option.textContent=v;
+        option.textContent = value;
 
         select.appendChild(option);
 
@@ -226,11 +191,11 @@ function populateSelect(id, field){
 
 }
 
-/*==================================================
-FILTER DATA
-==================================================*/
+/*==========================================================
+APPLY FILTERS
+==========================================================*/
 
-function applyFilters(){
+function applyFilters() {
 
     const year =
         document.getElementById("yearFilter").value;
@@ -244,28 +209,29 @@ function applyFilters(){
     const equity =
         document.getElementById("equityFilter").value;
 
-    filteredData = rawData.filter(r=>{
+    filteredData = originalData.filter(row => {
 
-        const yearMatch =
-            year==="All" ||
-            r.Academic_Year===year;
+        return (
 
-        const programmeMatch =
-            programme==="All" ||
-            r.Programme===programme;
+            (year === "All" ||
+                row.academic_year == year)
 
-        const levelMatch =
-            level==="All" ||
-            r.Level===level;
+            &&
 
-        const equityMatch =
-            equity==="All" ||
-            r.Equity_Status===equity;
+            (programme === "All" ||
+                row.program_clean === programme)
 
-        return yearMatch &&
-               programmeMatch &&
-               levelMatch &&
-               equityMatch;
+            &&
+
+            (level === "All" ||
+                row.level === level)
+
+            &&
+
+            (equity === "All" ||
+                row.equity_status === equity)
+
+        );
 
     });
 
@@ -273,380 +239,737 @@ function applyFilters(){
 
 }
 
-/*==================================================
-UPDATE DASHBOARD
-==================================================*/
+/*==========================================================
+UPDATE ENTIRE DASHBOARD
+==========================================================*/
 
-function updateDashboard(){
+function updateDashboard() {
 
-    updateKPIs();
+    updateKPIs(filteredData);
 
-    populateTable();
+    createCharts(filteredData);
 
-    generateInsights();
+    populateTable(filteredData);
 
-    if(typeof createCharts==="function"){
-
-        createCharts(filteredData);
-
-    }
+    generateInsights(filteredData);
 
 }
-/*==================================================
+
+/*==========================================================
 RESET FILTERS
-==================================================*/
+==========================================================*/
 
-function resetFilters(){
+function resetFilters() {
 
-    document.getElementById("yearFilter").value="All";
+    document.getElementById("yearFilter").value = "All";
 
-    document.getElementById("programmeFilter").value="All";
+    document.getElementById("programmeFilter").value = "All";
 
-    document.getElementById("levelFilter").value="All";
+    document.getElementById("levelFilter").value = "All";
 
-    document.getElementById("equityFilter").value="All";
+    document.getElementById("equityFilter").value = "All";
 
-    const search=document.getElementById("searchBox");
-
-    if(search){
-
-        search.value="";
-
-    }
-
-    filteredData=[...rawData];
+    filteredData = [...originalData];
 
     updateDashboard();
 
 }
 
-/*==================================================
+/*==========================================================
+REFRESH DATA
+==========================================================*/
+
+function refreshDashboard() {
+
+    filteredData = [...originalData];
+
+    updateDashboard();
+
+}
+/*==========================================================
 POPULATE DATA TABLE
-==================================================*/
+==========================================================*/
 
-function populateTable(){
+function populateTable(data) {
 
-    const tbody=document.querySelector("#dataTable tbody");
+    const tableBody = document.getElementById("tableBody");
 
-    if(!tbody) return;
+    if (!tableBody) return;
 
-    tbody.innerHTML="";
+    tableBody.innerHTML = "";
 
-    filteredData.forEach(row=>{
+    data.forEach(row => {
 
-        const tr=document.createElement("tr");
+        const tr = document.createElement("tr");
 
-        const total=
-            Number(row.Total_Students)||
-            Number(row.TotalStudents)||
-            Number(row.Total)||
-            0;
+        tr.innerHTML = `
 
-        const female=
-            Number(row.Female)||
-            Number(row.Female_Count)||
-            0;
+            <td>${row.program_clean}</td>
 
-        const male=
-            Number(row.Male)||
-            Number(row.Male_Count)||
-            (total-female);
+            <td>${row.academic_year}</td>
 
-        const femalePercent=
-            total>0 ?
-            ((female/total)*100).toFixed(1) :
-            "0.0";
+            <td>${row.level}</td>
 
-        const malePercent=
-            total>0 ?
-            ((male/total)*100).toFixed(1) :
-            "0.0";
+            <td>${Number(row.tot_students).toLocaleString()}</td>
 
-        tr.innerHTML=`
+            <td>${Number(row.tot_male).toLocaleString()}</td>
 
-        <td>${row.Programme||"-"}</td>
+            <td>${Number(row.tot_female).toLocaleString()}</td>
 
-        <td>${row.Academic_Year||"-"}</td>
+            <td>${Number(row.female_pct).toFixed(2)}%</td>
 
-        <td>${row.Level||"-"}</td>
-
-        <td>${total}</td>
-
-        <td>${femalePercent}%</td>
-
-        <td>${malePercent}%</td>
-
-        <td>${row.Equity_Status||"-"}</td>
+            <td>${row.equity_status}</td>
 
         `;
 
-        tbody.appendChild(tr);
+        tableBody.appendChild(tr);
 
     });
 
 }
 
-/*==================================================
+/*==========================================================
 SEARCH TABLE
-==================================================*/
+==========================================================*/
 
-function searchTable(){
+function searchTable() {
 
-    const keyword=
-    document
-    .getElementById("searchBox")
-    .value
-    .toLowerCase();
+    const searchBox = document.getElementById("searchBox");
 
-    const rows=
-    document.querySelectorAll("#dataTable tbody tr");
+    if (!searchBox) return;
 
-    rows.forEach(row=>{
+    const keyword = searchBox.value
+        .toLowerCase()
+        .trim();
 
-        if(row.innerText.toLowerCase().includes(keyword))
+    if (keyword === "") {
 
-            row.style.display="";
+        populateTable(filteredData);
 
-        else
+        return;
 
-            row.style.display="none";
+    }
+
+    const results = filteredData.filter(row => {
+
+        return (
+
+            String(row.program_clean)
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            String(row.academic_year)
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            String(row.level)
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            String(row.equity_status)
+                .toLowerCase()
+                .includes(keyword)
+
+        );
 
     });
 
+    populateTable(results);
+
 }
-/*==================================================
-AI INSIGHTS
-==================================================*/
 
-function generateInsights(){
+/*==========================================================
+SORT TABLE
+==========================================================*/
 
-    const container =
-        document.getElementById("aiRecommendations");
+function sortTable(column) {
 
-    if(!container) return;
+    filteredData.sort((a, b) => {
 
-    let totalStudents = 0;
-    let femaleStudents = 0;
+        const x = a[column];
+        const y = b[column];
 
-    filteredData.forEach(r=>{
+        if (typeof x === "number" &&
+            typeof y === "number") {
 
-        totalStudents +=
-            Number(r.Total_Students) ||
-            Number(r.TotalStudents) ||
-            Number(r.Total) ||
-            0;
+            return x - y;
 
-        femaleStudents +=
-            Number(r.Female) ||
-            Number(r.Female_Count) ||
-            0;
+        }
+
+        return String(x)
+            .localeCompare(String(y));
 
     });
 
-    let femalePercent = 0;
-
-    if(totalStudents>0){
-
-        femalePercent =
-            (femaleStudents/totalStudents)*100;
-
-    }
-
-    let equityScore = calculateEquity();
-
-    let html = "";
-
-    if(femalePercent >= 45 && femalePercent <= 55){
-
-        html += `
-        <div class="alert alert-success">
-            <strong>Excellent Gender Balance</strong><br>
-            Female participation is well balanced across the selected programmes.
-        </div>`;
-
-    }
-    else if(femalePercent < 45){
-
-        html += `
-        <div class="alert alert-warning">
-            <strong>Improve Female Participation</strong><br>
-            Female representation is below the desired benchmark.
-        </div>`;
-
-    }
-    else{
-
-        html += `
-        <div class="alert alert-primary">
-            <strong>Higher Female Participation</strong><br>
-            Female enrolment exceeds the balance threshold.
-        </div>`;
-
-    }
-
-    html += `
-    <div class="alert alert-primary">
-        <strong>Total Students:</strong> ${totalStudents.toLocaleString()}<br>
-        <strong>Female Percentage:</strong> ${femalePercent.toFixed(1)}%<br>
-        <strong>Equity Score:</strong> ${equityScore.toFixed(1)}
-    </div>`;
-
-    container.innerHTML = html;
+    populateTable(filteredData);
 
 }
 
-/*==================================================
-SUMMARY STATISTICS
-==================================================*/
+/*==========================================================
+GET TOTALS
+==========================================================*/
 
-function getSummary(){
+function calculateTotals(data) {
 
-    return{
+    return {
 
-        records:filteredData.length,
+        students:
 
-        students:filteredData.reduce((sum,r)=>
+            data.reduce(
+                (sum, r) =>
+                sum + Number(r.tot_students || 0), 0),
 
-            sum+
-            (
-                Number(r.Total_Students)||
-                Number(r.TotalStudents)||
-                Number(r.Total)||
-                0
-            )
+        male:
 
-        ,0)
+            data.reduce(
+                (sum, r) =>
+                sum + Number(r.tot_male || 0), 0),
+
+        female:
+
+            data.reduce(
+                (sum, r) =>
+                sum + Number(r.tot_female || 0), 0)
 
     };
 
 }
 
-/*==================================================
-HELPER FUNCTION
-==================================================*/
+/*==========================================================
+FORMAT NUMBER
+==========================================================*/
 
-function number(value){
+function formatNumber(value) {
 
-    return Number(value)||0;
+    return Number(value || 0).toLocaleString();
 
 }
 
-/*==================================================
-AUTO REFRESH
-==================================================*/
+/*==========================================================
+FORMAT PERCENTAGE
+==========================================================*/
 
-window.addEventListener("resize",()=>{
+function formatPercent(value) {
 
-    if(typeof createCharts==="function"){
+    return Number(value || 0).toFixed(2) + "%";
+
+}
+/*==========================================================
+AI INSIGHTS
+==========================================================*/
+
+function generateInsights(data) {
+
+    const container = document.getElementById("aiInsights");
+
+    if (!container) return;
+
+    if (data.length === 0) {
+
+        container.innerHTML = `
+            <div class="alert alert-warning">
+                No data available for the selected filters.
+            </div>
+        `;
+
+        return;
+    }
+
+    const totals = calculateTotals(data);
+
+    const overallFemale =
+        totals.students > 0
+            ? ((totals.female / totals.students) * 100)
+            : 0;
+
+    const overallMale =
+        totals.students > 0
+            ? ((totals.male / totals.students) * 100)
+            : 0;
+
+    /*-----------------------------------------
+      Highest Student Strength
+    ------------------------------------------*/
+
+    const highestStudents = [...data].sort(
+        (a, b) => b.tot_students - a.tot_students
+    )[0];
+
+    /*-----------------------------------------
+      Highest Female %
+    ------------------------------------------*/
+
+    const highestFemale = [...data].sort(
+        (a, b) => b.female_pct - a.female_pct
+    )[0];
+
+    /*-----------------------------------------
+      Highest Male %
+    ------------------------------------------*/
+
+    const highestMale = [...data].sort(
+        (a, b) => b.male_pct - a.male_pct
+    )[0];
+
+    /*-----------------------------------------
+      Equity Summary
+    ------------------------------------------*/
+
+    const balanced =
+        data.filter(r =>
+            r.equity_status === "Balanced"
+        ).length;
+
+    const moderate =
+        data.filter(r =>
+            r.equity_status === "Moderately Imbalanced"
+        ).length;
+
+    const highly =
+        data.filter(r =>
+            r.equity_status === "Highly Imbalanced"
+        ).length;
+
+    /*-----------------------------------------
+      Academic Years
+    ------------------------------------------*/
+
+    const years =
+        [...new Set(
+            data.map(r => r.academic_year)
+        )].sort();
+
+    /*-----------------------------------------
+      HTML
+    ------------------------------------------*/
+
+    container.innerHTML = `
+
+    <div class="row g-3">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>📊 Overall Gender Ratio</h5>
+
+                    <p>
+                        Female :
+                        <strong>${overallFemale.toFixed(2)}%</strong>
+                    </p>
+
+                    <p>
+                        Male :
+                        <strong>${overallMale.toFixed(2)}%</strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>🏆 Largest Programme</h5>
+
+                    <p>
+
+                        <strong>
+
+                        ${highestStudents.program_clean}
+
+                        </strong>
+
+                    </p>
+
+                    <p>
+
+                        Students :
+                        ${formatNumber(
+                            highestStudents.tot_students
+                        )}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>👩 Highest Female Participation</h5>
+
+                    <p>
+
+                        <strong>
+
+                        ${highestFemale.program_clean}
+
+                        </strong>
+
+                    </p>
+
+                    <p>
+
+                        ${formatPercent(
+                            highestFemale.female_pct
+                        )}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>👨 Highest Male Participation</h5>
+
+                    <p>
+
+                        <strong>
+
+                        ${highestMale.program_clean}
+
+                        </strong>
+
+                    </p>
+
+                    <p>
+
+                        ${formatPercent(
+                            highestMale.male_pct
+                        )}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>⚖ Equity Summary</h5>
+
+                    <ul>
+
+                        <li>Balanced : ${balanced}</li>
+
+                        <li>Moderately Imbalanced : ${moderate}</li>
+
+                        <li>Highly Imbalanced : ${highly}</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>📅 Academic Years</h5>
+
+                    <p>
+
+                        ${years.join(", ")}
+
+                    </p>
+
+                    <p>
+
+                        Total Years :
+                        ${years.length}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+/*==========================================================
+EXPORT TABLE TO CSV
+==========================================================*/
+
+function exportTableCSV(filename = "Chavara_GEM_Report.csv") {
+
+    if (!filteredData.length) {
+        alert("No data available to export.");
+        return;
+    }
+
+    const headers = [
+        "Programme",
+        "Academic Year",
+        "Level",
+        "Total Students",
+        "Male",
+        "Female",
+        "Female %",
+        "Male %",
+        "Equity Status"
+    ];
+
+    const rows = filteredData.map(row => [
+
+        row.program_clean,
+
+        row.academic_year,
+
+        row.level,
+
+        row.tot_students,
+
+        row.tot_male,
+
+        row.tot_female,
+
+        Number(row.female_pct).toFixed(2),
+
+        Number(row.male_pct).toFixed(2),
+
+        row.equity_status
+
+    ]);
+
+    const csvContent = [
+
+        headers,
+
+        ...rows
+
+    ]
+    .map(e => e.join(","))
+
+    .join("\n");
+
+    const blob = new Blob([csvContent], {
+
+        type: "text/csv;charset=utf-8;"
+
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+}
+
+/*==========================================================
+DOWNLOAD DASHBOARD REPORT
+==========================================================*/
+
+function downloadReport() {
+
+    window.print();
+
+}
+
+/*==========================================================
+SHOW LOADING SCREEN
+==========================================================*/
+
+function showLoader() {
+
+    const loader = document.getElementById("loadingScreen");
+
+    if (loader) {
+
+        loader.style.display = "flex";
+
+    }
+
+}
+
+/*==========================================================
+HIDE LOADING SCREEN
+==========================================================*/
+
+function hideLoader() {
+
+    const loader = document.getElementById("loadingScreen");
+
+    if (loader) {
+
+        loader.style.display = "none";
+
+    }
+
+}
+
+/*==========================================================
+SCROLL TO TOP
+==========================================================*/
+
+function scrollToTop() {
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+/*==========================================================
+WINDOW RESIZE
+==========================================================*/
+
+window.addEventListener("resize", () => {
+
+    if (typeof createCharts === "function") {
 
         createCharts(filteredData);
 
     }
 
 });
-/*==================================================
-EXPORT TABLE AS CSV
-==================================================*/
 
-function exportTableCSV(filename = "dashboard_data.csv") {
+/*==========================================================
+BUTTON EVENTS
+==========================================================*/
 
-    const table = document.getElementById("dataTable");
+document.addEventListener("DOMContentLoaded", () => {
 
-    if (!table) return;
+    const exportBtn = document.getElementById("exportCSV");
 
-    let csv = [];
+    if (exportBtn) {
 
-    for (let i = 0; i < table.rows.length; i++) {
+        exportBtn.addEventListener("click", () => {
 
-        let row = [];
-        let cols = table.rows[i].querySelectorAll("td,th");
-
-        cols.forEach(col => {
-
-            row.push('"' + col.innerText.replace(/"/g, '""') + '"');
+            exportTableCSV();
 
         });
 
-        csv.push(row.join(","));
+    }
+
+    const reportBtn = document.getElementById("downloadReport");
+
+    if (reportBtn) {
+
+        reportBtn.addEventListener("click", () => {
+
+            downloadReport();
+
+        });
 
     }
 
-    downloadCSV(csv.join("\n"), filename);
+    const topBtn = document.getElementById("scrollTop");
+
+    if (topBtn) {
+
+        topBtn.addEventListener("click", () => {
+
+            scrollToTop();
+
+        });
+
+    }
+
+});
+
+/*==========================================================
+HELPER FUNCTIONS
+==========================================================*/
+
+function safeNumber(value) {
+
+    return Number(value || 0);
 
 }
 
-/*==================================================
-DOWNLOAD CSV
-==================================================*/
+function percentage(part, total) {
 
-function downloadCSV(csv, filename){
+    if (total === 0) return 0;
 
-    const blob = new Blob([csv], {type:"text/csv"});
-
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-
-    a.href = url;
-
-    a.download = filename;
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    document.body.removeChild(a);
-
-    URL.revokeObjectURL(url);
+    return ((part / total) * 100);
 
 }
 
-/*==================================================
-NUMBER FORMATTER
-==================================================*/
+function uniqueValues(data, field) {
 
-function formatNumber(value){
-
-    return Number(value || 0).toLocaleString();
+    return [...new Set(data.map(item => item[field]))];
 
 }
 
-/*==================================================
-PERCENTAGE FORMATTER
-==================================================*/
+function sumField(data, field) {
 
-function formatPercent(value){
+    return data.reduce((sum, row) => {
 
-    return Number(value || 0).toFixed(1) + "%";
+        return sum + Number(row[field] || 0);
 
-}
-
-/*==================================================
-SAFE VALUE
-==================================================*/
-
-function safeValue(value){
-
-    if(value===undefined || value===null || value==="")
-
-        return "-";
-
-    return value;
+    }, 0);
 
 }
 
-/*==================================================
-LOGGING
-==================================================*/
+/*==========================================================
+CONSOLE MESSAGE
+==========================================================*/
 
-console.log("===================================");
+console.log(
+    "%cChavara GEM Analytics Studio v2 Loaded Successfully",
+    "color:green;font-size:16px;font-weight:bold;"
+);
 
-console.log("Chavara GEM Analytics Studio");
-
-console.log("Application Loaded Successfully");
-
-console.log("===================================");
-
-/*==================================================
+/*==========================================================
 END OF app.js
-==================================================*/
+==========================================================*/
+    
+
+}
