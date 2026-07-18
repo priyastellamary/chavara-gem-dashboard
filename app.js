@@ -61,7 +61,45 @@ function initializeDashboard() {
     generateInsights(filteredData);
 
 }
+// =======================================
+// NEW FUNCTION
+// =======================================
 
+function getLatestProgrammeRecords(data) {
+
+    const selectedYear =
+        document.getElementById("academicYearFilter").value;
+
+    if (selectedYear !== "All") {
+        return data;
+    }
+
+    const latest = {};
+
+    data.forEach(row => {
+
+        const key = row.program_clean;
+
+        if (
+            !latest[key] ||
+            Number(row.academic_year) >
+            Number(latest[key].academic_year)
+        ) {
+            latest[key] = row;
+        }
+
+    });
+
+    return Object.values(latest);
+
+}
+
+
+// Existing function
+
+function updateKPIs(data) {
+
+    ...
 /*==========================================================
 UPDATE KPI CARDS
 ==========================================================*/
