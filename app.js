@@ -89,10 +89,14 @@ function updateKPIs(data) {
         new Set(data.map(r => r.academic_year)).size;
 
     const balanced =
-        data.filter(r =>
-            r.equity_status === "Balanced").length;
+    data.filter(r =>
+        r.equity_status === "Balanced").length;
 
-    const highlyImbalanced =
+    const moderate =
+        data.filter(r =>
+            r.equity_status === "Moderately Imbalanced").length;
+
+    const highly =
         data.filter(r =>
             r.equity_status === "Highly Imbalanced").length;
 
@@ -104,14 +108,15 @@ function updateKPIs(data) {
 
     setValue("kpiFemalePercent",
         femalePercent.toFixed(2) + "%");
-
     setValue("kpiProgrammes", programmes);
-
+    
     setValue("kpiYears", academicYears);
-
+    
     setValue("kpiBalanced", balanced);
-
-    setValue("kpiHighly", highlyImbalanced);
+    
+    setValue("kpiModerate", moderate);
+    
+    setValue("kpiHighly", highly);
 
 }
 
