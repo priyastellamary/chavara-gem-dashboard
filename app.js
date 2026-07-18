@@ -91,9 +91,7 @@ function getLatestProgrammeRecords(data) {
 
 // Existing function
 
-function updateKPIs(data) {
 
-    ...
 /*==========================================================
 UPDATE KPI CARDS
 ==========================================================*/
