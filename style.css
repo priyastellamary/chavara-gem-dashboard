@@ -1455,7 +1455,111 @@ FOOTER
     color:#cbd5e1;
 
 }
+/* ==========================================
+   Equity Status Summary
+========================================== */
 
+.equity-summary{
+
+    height:100%;
+
+    padding:20px;
+
+}
+
+.equity-title{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-bottom:18px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#2563eb;
+
+}
+
+.equity-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+
+}
+
+.equity-item{
+
+    border-radius:12px;
+
+    padding:15px;
+
+    text-align:center;
+
+}
+
+.balanced{
+
+    background:#ecfdf5;
+
+}
+
+.moderate{
+
+    background:#fffbeb;
+
+}
+
+.high{
+
+    background:#fef2f2;
+
+}
+
+.equity-value{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.balanced .equity-value{
+
+    color:#16a34a;
+
+}
+
+.moderate .equity-value{
+
+    color:#d97706;
+
+}
+
+.high .equity-value{
+
+    color:#dc2626;
+
+}
+
+.equity-label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
 /*==================================================
 END OF FILE
 ==================================================*/
