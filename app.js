@@ -25,7 +25,8 @@ Papa.parse("chavara_gem_final_output_no_phd.csv", {
     skipEmptyLines: true,
 
     complete: function(results) {
-
+         console.log(results.data.length);
+         console.log(results.data[0]);
         originalData = results.data;
 
         filteredData = [...originalData];
