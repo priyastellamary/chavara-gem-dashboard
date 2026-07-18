@@ -99,14 +99,15 @@ UPDATE KPI CARDS
 ==========================================================*/
 
 function updateKPIs(data) {
-
-    const totalStudents = data.reduce(
+     
+    const kpiData = getLatestProgrammeRecords(data);
+    const totalStudents = kpiData.reduce(
         (sum, row) => sum + Number(row.tot_students || 0), 0);
 
-    const totalMale = data.reduce(
+    const totalMale = kpiData.reduce(
         (sum, row) => sum + Number(row.tot_male || 0), 0);
 
-    const totalFemale = data.reduce(
+    const totalFemale = kpiData.reduce(
         (sum, row) => sum + Number(row.tot_female || 0), 0);
 
     const femalePercent =
@@ -115,21 +116,21 @@ function updateKPIs(data) {
         : 0;
 
     const programmes =
-        new Set(data.map(r => r.program_clean)).size;
+        new Set(kpiData.map(r => r.program_clean)).size;
 
     const academicYears =
-        new Set(data.map(r => r.academic_year)).size;
+        new Set(kpiData.map(r => r.academic_year)).size;
 
     const balanced =
-    data.filter(r =>
+    kpiData.filter(r =>
         r.equity_status === "Balanced").length;
 
     const moderate =
-        data.filter(r =>
+        kpiData.filter(r =>
             r.equity_status === "Moderately Imbalanced").length;
 
     const highly =
-        data.filter(r =>
+        kpiData.filter(r =>
             r.equity_status === "Highly Imbalanced").length;
 
     setValue("kpiStudents", totalStudents.toLocaleString());
@@ -286,16 +287,13 @@ UPDATE ENTIRE DASHBOARD
 
 function updateDashboard() {
 
-    const dashboardData =
-        getLatestProgrammeRecords(filteredData);
+    updateKPIs(filteredData);
 
-    updateKPIs(dashboardData);
+    createCharts(filteredData);
 
-    createCharts(dashboardData);
+    populateTable(filteredData);
 
-    populateTable(dashboardData);
-
-    generateInsights(dashboardData);
+    generateInsights(filteredData);
 
 }
 
